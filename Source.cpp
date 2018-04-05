@@ -20,7 +20,7 @@ struct Node
 
 Node* nulltree = NULL;
 
-int cnt(Node* tree) //подсчет вершин в дереве
+int cnt(Node* tree) //counting vertexes in a tree
 {
 	if (tree == NULL)
 		return 0;
@@ -34,12 +34,12 @@ int index(Node* tree)
 	return cnt(tree->left);
 }
 
-void update (Node* tree) //обновление информации о вершине через ее потомков 
+void update (Node* tree) //updating information about vertex via its child 
 {
 	tree->cnt = cnt(tree->left) + cnt(tree->right) + 1;
 }
 
-Node* merge (Node* left_tree, Node* right_tree) //слияние двух деревьев
+Node* merge (Node* left_tree, Node* right_tree) //merging two trees
 {
 	if (left_tree == NULL)
 		return right_tree;
@@ -56,9 +56,9 @@ Node* merge (Node* left_tree, Node* right_tree) //слияние двух деревьев
 	return right_tree;
 }
 
-pair<Node*, Node*> split (Node* tree, int num) //разделение дерева по номеру вершины
-{                                              //данный номер будет последним в левом дереве
-	if (tree == NULL)                          //нумерация с 0
+pair<Node*, Node*> split (Node* tree, int num) //spliting tree by number
+{                                              //giving number will be the last in left part
+	if (tree == NULL)                          //numeration starts from 0
 		return mp(nulltree, nulltree);
 	if (index(tree) <= num)
 	{
@@ -71,8 +71,8 @@ pair<Node*, Node*> split (Node* tree, int num) //разделение дерева по номеру вер
 	return mp(tt.first, tree);
 }
 
-Node* insert (Node* tree, int value, int num) //вставка элемента по значению и номеру
-{                                             //если такого номера нет, элемент будет вставлен в ближайший возможный
+Node* insert (Node* tree, int value, int num) //inserting an element by its value and number
+{                                             //if there is no such number in trees, element will be added in the nearest place
 	auto tt = split(tree, num - 1);
 	Node* new_elem = new Node(value);
 	tt.first = merge(tt.first, new_elem);
@@ -80,15 +80,15 @@ Node* insert (Node* tree, int value, int num) //вставка элемента по значению и н
 	return tree;
 }
 
-Node* erase (Node* tree, int num) //удаление элемента по номеру
-{                                 //если такого номера нет, ничего не удалится
+Node* erase (Node* tree, int num) //erasing an element by number
+{                                 //if there is no such number, nothing will be erased
 	auto tt = split(tree, num);
 	auto tt2 = split(tt.first, num - 1);
 	tree = merge(tt2.first, tt.second);
 	return tree;
 }
 
-void print_tree (Node* tree) //вывод дерева в строчку
+void print_tree (Node* tree) //in-order printing tree in line 
 {
 	if (tree == NULL)
 		return;
